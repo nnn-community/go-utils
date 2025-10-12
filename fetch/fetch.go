@@ -13,7 +13,7 @@ type Fetch interface {
     SetHeaders(headers map[string]string)
     SetContentType(contentType string)
     SetBearer(token string)
-    Do(result *interface{}) error
+    Do(result any) error
 }
 
 func New(method string, url string, data ...interface{}) Fetch {
@@ -54,7 +54,7 @@ func (f *FetchClient) SetBearer(token string) {
     f.SetHeader("Authorization", fmt.Sprintf("Bearer %s", token))
 }
 
-func (f *FetchClient) Do(result *interface{}) error {
+func (f *FetchClient) Do(result any) error {
     var err error
 
     payloadBytes, err := json.Marshal(f.data)
