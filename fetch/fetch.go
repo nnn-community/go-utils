@@ -56,16 +56,21 @@ func (f *FetchClient) SetBearer(token string) {
 
 func (f *FetchClient) Do(result any) error {
     var err error
+    var req *http.Request
 
-    payloadBytes, err := json.Marshal(f.data)
+    if f.data != nil {
+        payloadBytes, err := json.Marshal(f.data)
 
-    if err != nil {
-        return err
+        if err != nil {
+            return err
+        }
+
+        req, err = http.NewRequest(f.method, f.url, bytes.NewBuffer(payloadBytes))
+    } else {
+        req, err = http.NewRequest(f.method, f.url, nil)
     }
 
-    req, err := http.NewRequest(f.method, f.url, bytes.NewBuffer(payloadBytes))
-
-    if err != nil {
+    if err != nil || req == nil {
         return err
     }
 
