@@ -81,6 +81,8 @@ func (f *FetchClient) Do(result any) error {
     client := &http.Client{}
     resp, err := client.Do(req)
 
+    defer resp.Body.Close()
+
     if err != nil {
         return err
     }
@@ -91,7 +93,13 @@ func (f *FetchClient) Do(result any) error {
         return err
     }
 
-    return json.Unmarshal(body, &result)
+    if string(body) != "" {
+        return json.Unmarshal(body, &result)
+    } else {
+        result = nil
+    }
+
+    return nil
 }
 
 type FetchClient struct {
