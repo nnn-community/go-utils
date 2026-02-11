@@ -8,7 +8,7 @@ import (
 )
 
 func Filter[T any](collection []T, callback func(key int, value T) bool) []T {
-    var result []T
+    result := make([]T, 0)
 
     for i, item := range collection {
         if callback(i, item) {
@@ -74,7 +74,7 @@ func Group[T any](data []T, key string) map[string][]T {
 
 func GroupKey[T any](data []T, key string) []string {
     idMap := make(map[string]bool)
-    var uniqueIds []string
+    uniqueIds := make([]string, 0)
     sliceValue := reflect.ValueOf(data)
 
     for i := range data {
@@ -106,7 +106,7 @@ func Contains[T comparable](arr []T, item T) bool {
 }
 
 func Map[T any, R any](collection []T, callback func(key int, value T) R) []R {
-    var result []R
+    result := make([]R, 0)
 
     for i, item := range collection {
         result = append(result, callback(i, item))
